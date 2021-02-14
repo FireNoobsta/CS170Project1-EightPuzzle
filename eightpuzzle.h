@@ -19,54 +19,57 @@ class Eightpuzzle : public Puzzle {
 			blank = 8;
 		};
 		
-		void move_up() {
+		bool move_up() {
 			if (blank >= 0 && blank <=2) {
 				cout << "Error: illegal move" << endl;
-				return;	
+				return false;	
 			}
 			board.at(blank) = board.at(blank - 3);
 			board.at(blank - 3) = 0;
 			blank = blank - 3;
+			return true;
 		};
 		
-		void move_down() {
+		bool move_down() {
 			if (blank >= 6 && blank <= 8) {
 				cout << "Error: illegal move" << endl;
-				return;
+				return false;
 			}
 			board.at(blank) = board.at(blank + 3);
 			board.at(blank + 3) = 0;
 			blank = blank + 3; 
+			return true;
 		};
 		
-		void move_left() {
+		bool move_left() {
 			if ((blank % 3) == 0) {
 				cout << "Error: illegal move" << endl;
-				return;
+				return false;
 			}
 			board.at(blank) = board.at(blank - 1);
 			board.at(blank - 1) = 0;
 			blank = blank - 1;
+			return true;
 		};
 		
-		void move_right() {
+		bool move_right() {
 			if ((blank % 3) == 2) {
 				cout << "Error: illegal move" << endl;
-				return;
+				return false;
 			}
 			board.at(blank) = board.at(blank + 1);
 			board.at(blank + 1) = 0;
 			blank = blank + 1;
+			return true;
 		};
 		
 		bool isSolved() {
-			vector<int> goal;
-			for (int i = 1; i < 9; ++i) {
-				goal.push_back(i);
+			for (int i = 0; i < 8; ++i) {
+				if (board.at(i) != i + 1) {
+					return false;
+				}
 			}
-			goal.push_back(0);
-			
-			return (board == goal);
+			return (board.at(8) == 0);
 		};
 		
 		void print_board() {
