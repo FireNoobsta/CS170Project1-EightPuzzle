@@ -1,45 +1,39 @@
 #include<iostream>
+#include<cstdlib>
+#include<ctime>
 #include "eightpuzzle.h"
+#include "searches.h"
 
 using namespace std;
 
 int main() {
 	Eightpuzzle puzzle;
-	puzzle.move_up();
-	int input = 0;
-	while (input != 5) {
-		puzzle.print_board();
-		if (puzzle.isSolved()) {
-			cout << "Congratulations! The puzzle is solved!" << endl;
-			return 0;
-		}
-		cout << "Choose a move. (0 represents a blank space)" << endl;
-		cout << "1. Move blank up" << endl;
-		cout << "2. Move blank right" << endl;
-		cout << "3. Move blank down" << endl;
-		cout << "4. Move blank left" << endl;
-		cout << "5. Quit" << endl;
-		cin >> input;
-		switch (input) {
+	srand(time(0));
+	for (int i = 0; i < 50; ++i) {
+		switch (rand() % 4) {
+			case 0:
+				puzzle.move_up();
+				break;
 			case 1:
-			puzzle.move_up();
-			break;
-			
+				puzzle.move_down();
+				break;
 			case 2:
-			puzzle.move_right();
-			break;
-			
+				puzzle.move_left();
+				break;
 			case 3:
-			puzzle.move_down();
-			break;
-			
-			case 4:
-			puzzle.move_left();
-			break;
-			
-			default:
-			break;
+				puzzle.move_right();
+				break;
 		}
 	}
+	cout << "Initial puzzle state." << endl;
+	puzzle.print_board();
+	cout << "Attempting to solve puzzle with uniform cost algorithm" << endl;
+	if (puzzle_search(puzzle, 0)) {
+		cout << "Found solution!" << endl;
+	}
+	else {
+		cout << "Something went horribly wrong" << endl;
+	}
+	
 	return 0;
 }

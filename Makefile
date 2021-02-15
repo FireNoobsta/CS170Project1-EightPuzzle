@@ -1,7 +1,7 @@
 OBJS	= searches.o main.o
 
 CC	= g++
-CFLAGS	= -g -Wall
+CFLAGS	= -g -Wall -std=c++11
 
 puzzle:		$(OBJS)
 		$(CC) $(CFLAGS) $(OBJS) -o puzzle
