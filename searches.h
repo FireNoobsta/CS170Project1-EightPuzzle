@@ -6,5 +6,5 @@
 #include<unordered_set>
 
 void Queueing_Function (Node* node, queue<Node*> &nodes, unordered_set<int> &repeats, int queueFunc);
-bool puzzle_search(Eightpuzzle puzzle, int queueFunc);
+bool puzzle_search(Eightpuzzle puzzle, Heuristic heur);
 #endif

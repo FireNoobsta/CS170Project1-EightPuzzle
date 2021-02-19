@@ -1,0 +1,4 @@
+#ifndef HEURISTIC_H
+#define HEURISTIC_H
+enum Heuristic {UNIFORM_COST, MISPLACED_TILE, MANHATTAN_DISTANCE};
+#endif

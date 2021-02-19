@@ -1,15 +1,20 @@
 #ifndef NODE_H
 #define NODE_H
 #include "eightpuzzle.h"
+#include "heuristic.h"
 class Node {
 	public:
 		Eightpuzzle puzzle;
 		vector<Node*> children;
 		Node* parent;
+		int depth;
+		int totalCost; //Sum of cost and chosen heuristic. F(n) = G(n) + H(n)
 	
 	public:
 		Node() {
 			parent = 0;
+			depth = 0;
+			totalCost = 0;
 		}
 		
 		void expand() {
@@ -27,6 +32,7 @@ class Node {
 				Node* n1 = new Node;
 				n1->puzzle = p1;
 				n1->parent = this;
+				n1->depth = depth + 1;
 				children.push_back(n1);
 			}
 			
@@ -34,6 +40,7 @@ class Node {
 				Node* n2 = new Node;
 				n2->puzzle = p2;
 				n2->parent = this;
+				n2->depth = depth + 1;
 				children.push_back(n2);
 			}
 			
@@ -41,6 +48,7 @@ class Node {
 				Node* n3 = new Node;
 				n3->puzzle = p3;
 				n3->parent = this;
+				n3->depth = depth + 1;
 				children.push_back(n3);
 			}
 			
@@ -48,7 +56,24 @@ class Node {
 				Node* n4 = new Node;
 				n4->puzzle = p4;
 				n4->parent = this;
+				n4->depth = depth + 1;
 				children.push_back(n4);
+			}
+		}
+		
+		void update_totalCost(Heuristic heur) {
+			if (parent == 0) { //Root node, cost is zero
+				totalCost = 0;
+				return;
+			}
+			
+			switch (heur) {
+				case UNIFORM_COST:
+				totalCost = depth; //H(n) is 0, F(n) = G(n) + 0, F(n) = depth of node
+				break;
+				
+				default:
+				break;
 			}
 		}
 };

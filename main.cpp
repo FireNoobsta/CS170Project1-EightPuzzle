@@ -28,7 +28,7 @@ int main() {
 	cout << "Initial puzzle state." << endl;
 	puzzle.print_board();
 	cout << "Attempting to solve puzzle with uniform cost algorithm" << endl;
-	if (puzzle_search(puzzle, 0)) {
+	if (puzzle_search(puzzle, UNIFORM_COST)) {
 		cout << "Found solution!" << endl;
 	}
 	else {
