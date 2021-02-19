@@ -1,5 +1,4 @@
 #include "eightpuzzle.h"
-#include "node.h"
 #include "searches.h"
 #include<cstdlib>
 #include<queue>
@@ -32,7 +31,7 @@ bool insert_node_sorted(Node* node, list<Node*> &nodes) {
 void Queueing_Function (Node* node, list<Node*> &nodes, unordered_set<int> &repeats, Heuristic heur) {
 	node->expand();
 	nodesExpanded++;
-	//cout << "Expanding following state..." << endl;
+	//cout << "Expanding following state. With h(n) = "<< node->totalCost - node->depth << endl;
 	//node->puzzle.print_board();
 	for (unsigned int i = 0; i < node->children.size(); ++i) {
 		if (repeats.count(node->children.at(i)->puzzle.key) > 0) {

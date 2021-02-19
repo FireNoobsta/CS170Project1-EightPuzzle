@@ -2,6 +2,7 @@
 #define NODE_H
 #include "eightpuzzle.h"
 #include "heuristic.h"
+
 class Node {
 	public:
 		Eightpuzzle puzzle;
@@ -66,10 +67,40 @@ class Node {
 				totalCost = 0;
 				return;
 			}
-			
+			int h = 0;
+			int index = 0;
 			switch (heur) {
 				case UNIFORM_COST:
 				totalCost = depth; //H(n) is 0, F(n) = G(n) + 0, F(n) = depth of node
+				break;
+				
+				case MISPLACED_TILE:
+				for (unsigned int i = 0; i < puzzle.board.size() - 1; ++i) {
+					if (puzzle.board.at(i) == (i + 1)) {
+						continue;
+					}
+					++h;
+				}
+				totalCost = depth + h;
+				break;
+				
+				case MANHATTAN_DISTANCE:
+				for (int i = 0; i < puzzle.board.size() - 1; ++i) {
+					if (puzzle.board.at(i) == (i + 1)) {
+						continue;
+					}
+					
+					for (unsigned int j = 0; j < puzzle.board.size(); ++j) {
+						if (puzzle.board.at(j) == (i + 1)) {
+							index = j;
+							break;
+						}
+					}
+					
+					h += abs((i % 3) - (index % 3));
+					h += abs((i / 3) - (index / 3));
+				}
+				totalCost = depth + h;
 				break;
 				
 				default:

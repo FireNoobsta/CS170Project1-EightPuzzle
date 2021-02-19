@@ -8,7 +8,7 @@
 using namespace std;
 
 class Eightpuzzle : public Puzzle {
-	private:
+	public:
 		vector<int> board;
 		int blank; //position of blank space in vector
 	
@@ -82,7 +82,7 @@ class Eightpuzzle : public Puzzle {
 		
 		bool isSolved() {
 			for (int i = 0; i < 8; ++i) {
-				if (board.at(i) != i + 1) {
+				if (board.at(i) != (i + 1)) {
 					return false;
 				}
 			}
