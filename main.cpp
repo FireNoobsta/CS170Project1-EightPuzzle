@@ -6,6 +6,8 @@
 
 using namespace std;
 
+//Create a custom puzzle from user input
+//Does not check for valid input or if puzzle is solvable
 void get_puzzle_input(Eightpuzzle &puzzle) {
 	vector<int> board;
 	int input;
@@ -39,6 +41,8 @@ int main() {
 	cout << "Type \"1\" for a random puzzle. Type \"2\" to input your own puzzle." << endl;
 	cin >> input;
 	if (input == 1) {
+		//Generate random puzzle by making random moves
+		//Note: Starts from a solved state so the result is guaranteed to be solvable
 		for (int i = 0; i < 500; ++i) {
 			switch (rand() % 4) {
 				case 0:
@@ -57,7 +61,7 @@ int main() {
 		}
 	}
 	else if (input == 2) {
-		get_puzzle_input(puzzle);
+		get_puzzle_input(puzzle); //make custom puzzle from input
 	}
 	
 	while (input != 4) {

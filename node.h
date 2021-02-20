@@ -3,23 +3,27 @@
 #include "eightpuzzle.h"
 #include "heuristic.h"
 
+//Nodes used for the tree
 class Node {
 	public:
-		Eightpuzzle puzzle;
-		vector<Node*> children;
-		Node* parent;
-		int depth;
+		Eightpuzzle puzzle; //state stored in puzzle
+		vector<Node*> children; //children of this node
+		Node* parent; //parent of this node
+		int depth; //depth in tree, since each move has the same cost this is essentially G(n)
 		int totalCost; //Sum of cost and chosen heuristic. F(n) = G(n) + H(n)
 	
 	public:
+		//default constructor makes a root node by setting parent node pointer to 0
 		Node() {
 			parent = 0;
 			depth = 0;
 			totalCost = 0;
 		}
 		
+		//expand node by attempting every possible move
 		void expand() {
 			if (children.size() > 0) {
+				//node is already expanded if children is non-empty
 				return;
 			}
 			
@@ -29,6 +33,7 @@ class Node {
 			p3 = puzzle;
 			p4 = puzzle;
 			
+			//if a move is legal, make a new node and populate it accordingly
 			if (p1.move_up()) {
 				Node* n1 = new Node;
 				n1->puzzle = p1;
@@ -62,13 +67,14 @@ class Node {
 			}
 		}
 		
+		//update the total cost of a node, depending on the chosen heuristic
 		void update_totalCost(Heuristic heur) {
 			if (parent == 0) { //Root node, cost is zero
 				totalCost = 0;
 				return;
 			}
-			int h = 0;
-			int index = 0;
+			int h = 0; //H(n)
+			int index = 0; //used for calculating manhattan distance
 			switch (heur) {
 				case UNIFORM_COST:
 				totalCost = depth; //H(n) is 0, F(n) = G(n) + 0, F(n) = depth of node
@@ -81,7 +87,7 @@ class Node {
 					}
 					++h;
 				}
-				totalCost = depth + h;
+				totalCost = depth + h; //H(n) is number of misplaced tiles
 				break;
 				
 				case MANHATTAN_DISTANCE:
@@ -90,6 +96,7 @@ class Node {
 						continue;
 					}
 					
+					//find the index of the tile you expected to be at ith position
 					for (unsigned int j = 0; j < puzzle.board.size(); ++j) {
 						if (puzzle.board.at(j) == (i + 1)) {
 							index = j;
@@ -97,10 +104,11 @@ class Node {
 						}
 					}
 					
+					//add the horizontal distance and vertical distance to the proper spot
 					h += abs((i % 3) - (index % 3));
 					h += abs((i / 3) - (index / 3));
 				}
-				totalCost = depth + h;
+				totalCost = depth + h; //H(n) is sum total of the manhattan distances of each tile to its proper spot
 				break;
 				
 				default:

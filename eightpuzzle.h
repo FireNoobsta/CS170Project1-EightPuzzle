@@ -9,11 +9,18 @@ using namespace std;
 
 class Eightpuzzle : public Puzzle {
 	public:
-		vector<int> board;
+		vector<int> board; //board is stored in vector, first 3 entries is first row, and next 3 is 2nd row, and last 3 are 3rd row
 		int blank; //position of blank space in vector
-	
+		int key; //another representation of the board for easily detecting repeated states
+		/*
+		if the board looks like
+		1 2 3 
+		4 5 6 
+		7 8 0
+		The key would be the single integer 123456780
+		*/
 	public:
-		int key;
+		//update the key of the puzzle, to be done every time the board changes
 		void update_key() {
 			int newKey = 0;
 			for (int i = 0; i < 9; ++i) {
@@ -21,8 +28,8 @@ class Eightpuzzle : public Puzzle {
 			}
 			key = newKey;
 		}
-	
-	public:
+		
+		//default constructor creates a solved puzzle state
 		Eightpuzzle() {
 			for (int i = 1; i < 9; ++i) {
 				board.push_back(i);
@@ -32,6 +39,7 @@ class Eightpuzzle : public Puzzle {
 			key = 123456780;
 		};
 		
+		//all four operators return true if a valid move was made and false if it is an illegal move
 		bool move_up() {
 			if (blank >= 0 && blank <=2) {
 				//cout << "Error: illegal move" << endl;
@@ -80,6 +88,7 @@ class Eightpuzzle : public Puzzle {
 			return true;
 		};
 		
+		//checks if puzzle is currently in solved state
 		bool isSolved() {
 			for (int i = 0; i < 8; ++i) {
 				if (board.at(i) != (i + 1)) {
@@ -89,6 +98,7 @@ class Eightpuzzle : public Puzzle {
 			return (board.at(8) == 0);
 		};
 		
+		//prints out the board
 		void print_board() {
 			for (int i = 0; i < 9; ++i) {
 				cout << board.at(i) << " ";
