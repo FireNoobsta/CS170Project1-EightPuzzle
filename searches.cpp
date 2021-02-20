@@ -34,6 +34,7 @@ bool insert_node_sorted(Node* node, list<Node*> &nodes) {
 void Queueing_Function (Node* node, list<Node*> &nodes, unordered_set<int> &repeats, Heuristic heur) {
 	node->expand();
 	nodesExpanded++;
+	repeats.insert(node->puzzle.key); //insert state into set of repeated states only after expanding
 	/*
 	Note: The following two lines are commented out because it floods output for hard puzzles.
 	If you want to trace every node that is expanded uncomment the next two lines
@@ -47,7 +48,6 @@ void Queueing_Function (Node* node, list<Node*> &nodes, unordered_set<int> &repe
 		else {
 			node->children.at(i)->update_totalCost(heur); //update cost of node
 			insert_node_sorted(node->children.at(i), nodes); //queue node
-			repeats.insert(node->children.at(i)->puzzle.key); //insert state into set of repeated states
 		}
 	}
 	
@@ -77,10 +77,9 @@ bool puzzle_search(Eightpuzzle puzzle, Heuristic heur) {
 	list<Node*> nodes;
 	unordered_set<int> repeatedStates;
 	
-	//create node based on puzzle input and insert to queue and set
+	//create node based on puzzle input and insert to queue
 	Node* initialState = new Node;
 	initialState->puzzle = puzzle;
-	repeatedStates.insert(puzzle.key);
 	nodes.push_back(initialState);
 	
 	//general search algorithm
